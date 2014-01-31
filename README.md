@@ -27,54 +27,28 @@ The code shows that this algorithm works in 4 steps:
 
 1)Visibility of System Status: to keep users informed about what is going on, through feedback within reasonable time
 
-Highlighting selected picture’s thumbnails.
-
-Displaying cursor tracking the mouse (“the cursor path”).
-<br>
-
 2)Match between system and the real word: speak the user’s language, use words and phrases familiar to the user.
-
-The name of buttons and gestures are defined as “Next” ”Previous” ”Stop” ”Continue” ”Manual”, which follows the real world conventions. In real word, we also say and think like this.
-<img src="https://s3.amazonaws.com/js4153/16.png">
 
 3)User control and freedom
 
-User can choose to control the application in two methods：they can either click the buttons on the screen or choose to control the gallery by drawing gestures on canvas.
-
-The interface is simple, and no complex layers, users will find it difficult to get lost in this application, they will be always aware that what they are doing.
-<br>
 4)Consistency and Standards
 
-Terminology Consistent:
-
-Platform Consistent:
-
-
-<br>
 5)Recognition rather than recall
 
-To minimize the user’s memory load, the message on top of the gallery will always tell the user what they are doing now. 
-<br>
 6)Feedback: Minimize the” Gulf of Evaluation”
 
-The words shown on top of the image gallery gives users feedback when they are drawing on the screen.
-<br>
 7)Aesthetic and minimalist design
 
-Users are always reluctant to read words and texts, they prefer to watch pictures and make interactions. 
-<br>
 8)Flexibility and efficiency of use
-For novice user, they can make interaction with the system by clicking the isible buttons, they are easy to see and reach.
 
-For expert user, they have short cuts. The gesture features allow them to speed up interaction with the system.
-<br>
 9）Help and documentation.
-<br>
+
 10) Universal Usability
-<br>
+
+
 
 3.Build
-
+<img src="https://s3.amazonaws.com/js4153/16.png">
 <img src="https://s3.amazonaws.com/js4153/17.png">
 <br>
 
