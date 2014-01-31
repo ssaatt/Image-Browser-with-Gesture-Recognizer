@@ -48,6 +48,7 @@ The code shows that this algorithm works in 4 steps:
 
 
 3.Build
+
 <img src="https://s3.amazonaws.com/js4153/16.png">
 <img src="https://s3.amazonaws.com/js4153/17.png">
 <br>
