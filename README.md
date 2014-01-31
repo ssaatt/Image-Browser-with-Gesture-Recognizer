@@ -7,7 +7,7 @@ This gallery consists of a set of thumbnails that link to the full sized images.
 
 Over Process:
 
-1. Play with $1 Unistroke Gesture and Read the Code
+1.Play with $1 Unistroke Gesture and Read the Code
 
 The $1 is designed for recognizing user’s gestures. By the less-than-100 lines code, people can quickly add gesture recognition feature to their applications. It is very accurate.
 
@@ -23,7 +23,7 @@ The code shows that this algorithm works in 4 steps:
 
 <br>
 
-2. Use Seven Stages of Action(--Norman 1988), Golden Rules of UI Design, Ten Usability Heuristics, and Fitt’s Law to refine the initial design. Make the final Design version. Justify why making such decisions.
+2.Use Seven Stages of Action(--Norman 1988), Golden Rules of UI Design, Ten Usability Heuristics, and Fitt’s Law to refine the initial design. Make the final Design version. Justify why making such decisions.
 
 1)Visibility of System Status: to keep users informed about what is going on, through feedback within reasonable time
 
@@ -72,14 +72,16 @@ For expert user, they have short cuts. The gesture features allow them to speed 
 <br>
 10) Universal Usability
 <br>
-3. Build
+
+3.Build
 
 <img src="https://s3.amazonaws.com/js4153/17.png">
 <br>
 
-4. Release
+4.Release
 <br>
-5. References:
+
+5.References:
 
 1) http://www.juicebox.net/demos/  http://wowslider.com/demo.html
 
