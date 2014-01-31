@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Gest Image Browser</title>
+	<!--[if IE]><script src="excanvas.js"></script><![endif]-->
+	<script type="text/javascript" src="js/canvas.text.js"></script>
+	<script type="text/javascript" src="js/dollar.js"></script>
+	<link rel="stylesheet" href="css/image browser.css" />
+	<script type="text/javascript" src="js/1.js"></script>
+	<script type="text/javascript" src="js/2.js"></script>
+	<script type="text/javascript" src="js/image browser.js"></script>
+	<style type="text/css">
+	body{
+		font-family: Trebuchet MS, Arial;
+		font-size:160%;
+		width:100%;
+		background-color:#000;
+	    }
+	</style>
+	
+	<script type="text/javascript"><!--
+	    //
+		// Startup
+		//
+		var _isDown, _points, _r, _g, _rc;
+		function onLoadEvent()
+		{
+			_points = new Array();
+			_r = new DollarRecognizer();
+
+			var canvas = document.getElementById('myCanvas');
+			_g = canvas.getContext('2d');
+			_g.fillStyle = "rgb(0,191,225)";
+			_g.strokeStyle = "rgb(0,191,225)";
+			_g.lineWidth = 3;
+			_g.font = "16px Gentilis";
+			_rc = getCanvasRect(canvas); // canvas rect on page
+			_g.fillStyle = "rgb(0,0,0)";
+			_g.fillRect(0, 0, _rc.width, 20);
+
+			_isDown = false;
+		}
+		function getCanvasRect(canvas)
+		{
+			var w = canvas.width;
+			var h = canvas.height;
+
+			var cx = canvas.offsetLeft;
+			var cy = canvas.offsetTop;
+			while (canvas.offsetParent != null)
+			{
+				canvas = canvas.offsetParent;
+				cx += canvas.offsetLeft;
+				cy += canvas.offsetTop;
+			}
+			return {x: cx, y: cy, width: w, height: h};
+		}
+		function getScrollY()
+		{
+			var scrollY = 0;
+			if (typeof(document.body.parentElement) != 'undefined')
+			{
+				scrollY = document.body.parentElement.scrollTop; // IE
+			}
+			else if (typeof(window.pageYOffset) != 'undefined')
+			{
+				scrollY = window.pageYOffset; // FF
+			}
+			return scrollY;
+		}
+		//
+		// Mouse Events
+		//
+		function mouseDownEvent(x, y)
+		{
+			document.onselectstart = function() { return false; } // disable drag-select
+			document.onmousedown = function() { return false; } // disable drag-select
+			_isDown = true;
+			x -= _rc.x;
+			y -= _rc.y - getScrollY();
+			if (_points.length > 0)
+				_g.clearRect(0, 0, _rc.width, _rc.height);
+			_points.length = 1; // clear
+			_points[0] = new Point(x, y);
+			_g.fillRect(x - 4, y - 3, 9, 9);
+		}
+		function mouseMoveEvent(x, y)
+		{
+			if (_isDown)
+			{
+				x -= _rc.x;
+				y -= _rc.y - getScrollY();
+				_points[_points.length] = new Point(x, y); // append
+				drawConnectedPoint(_points.length - 2, _points.length - 1);
+			}
+		}
+		function mouseUpEvent(x, y)
+		{
+			document.onselectstart = function() { return true; } // enable drag-select
+			document.onmousedown = function() { return true; } // enable drag-select
+			if (_isDown)
+			{
+				_isDown = false;
+				if (_points.length >= 10)
+				{
+					var result = _r.Recognize(_points, document.getElementById('useProtractor').checked);
+					drawText("         We are going to " + result.Name);
+					if (result.Name=='the NEXT page'){
+					gallery.next();}
+					else if(result.Name=='the PREVIOUS page')
+				    {gallery.previous();}
+				    else if(result.Name=='STOP rolling')
+				    {gallery.stopAutoPlay();}
+				    else if(result.Name=='CONTINUE rolling')
+				    {gallery.startAutoPlay();}
+				    else if(result.Name=='view author MANUAL')
+				    {var text="Author's Manual:\nWelcom to Gest Image Browser!!\nHope you a nice experience! \nYou can also click the '!' button to learn more.\n^_^   \n\nBest,\nJingzhe";
+				    alert(text);
+				   }
+				}
+				else // fewer than 10 points were inputted
+				{
+					drawText("");
+				}
+			}
+		}
+		function drawText(str)
+		{
+			_g.fillStyle = "rgb(0,0,0)";
+			_g.fillRect(0, 0, _rc.width, 20);
+			_g.fillStyle = "rgb(132,132,132)";
+			_g.fillText(str, 1, 14);
+		}
+		function drawConnectedPoint(from, to)
+		{
+			_g.beginPath();
+			_g.moveTo(_points[from].X, _points[from].Y);
+			_g.lineTo(_points[to].X, _points[to].Y);
+			_g.closePath();
+			_g.stroke();
+		}
+		function round(n, d) // round 'n' to 'd' decimals
+		{
+			d = Math.pow(10, d);
+			return Math.round(n * d) / d
+		}
+		//
+		// Unistroke Adding and Clearing
+		//
+		function onClickAddExisting()
+		{
+			if (_points.length >= 10)
+			{
+				var unistrokes = document.getElementById('Unistrokes');
+				var name = unistrokes[unistrokes.selectedIndex].value;
+				var num = _r.AddGesture(name, _points);
+				drawText("\"" + name + "\" added. Number of \"" + name + "\"s defined: " + num + ".");
+			}
+		}
+		function onClickAddCustom()
+		{
+			var name = document.getElementById('custom').value;
+			if (_points.length >= 10 && name.length > 0)
+			{
+				var num = _r.AddGesture(name, _points);
+				drawText("\"" + name + "\" added. Number of \"" + name + "\"s defined: " + num + ".");
+			}
+		}
+		function onClickCustom()
+		{
+			document.getElementById('custom').select();
+		}
+		function onClickDelete()
+		{
+			var num = _r.DeleteUserGestures(); // deletes any user-defined unistrokes
+			alert("All user-defined gestures have been deleted. Only the 1 predefined gesture remains for each of the " + num + " types.");
+		}
+	// -->
+	</script>
+</head>
+
+<h1> <font size=7 color=#ff9999>Welcome to Gest-Image-Browser</font></h1>
+
+<body onload="onLoadEvent()">
+	
+	<div id="image-browser" class="image-browser">
+		
+     <div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/1.jpg">
+		<span class="image-browser-caption">1. White Beauty</span>
+		<span class="image-browser-large-image-path">image1/1.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/2.jpg">
+		<span class="image-browser-caption">2. Blonde Beauty</span>
+		<span class="image-browser-large-image-path">image1/2.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/3.jpg">
+		<span class="image-browser-caption">3. Smoking Beauty</span>
+		<span class="image-browser-large-image-path">image1/3.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/4.jpg">
+		<span class="image-browser-caption">4. Red Beauty</span>
+		<span class="image-browser-large-image-path">image1/4.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/5.jpg">
+		<span class="image-browser-caption">5. Lying Beauty</span>
+		<span class="image-browser-large-image-path">image1/5.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/6.jpg">
+		<span class="image-browser-caption">6. Charming Beauty</span>
+		<span class="image-browser-large-image-path">image1/6.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/7.jpg">
+		<span class="image-browser-caption">7. Closing-Eye Beauty</span>
+		<span class="image-browser-large-image-path">image1/7.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/8.jpg">
+		<span class="image-browser-caption">8. Sexy Beauty</span>
+		<span class="image-browser-large-image-path">image1/8.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/9.jpg">
+		<span class="image-browser-caption">9. Green Beauty</span>
+		<span class="image-browser-large-image-path">image1/9.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/10.jpg">
+		<span class="image-browser-caption">10. Pure Beauty</span>
+		<span class="image-browser-large-image-path">image1/10.jpg</span>
+	</div>
+	
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/11.jpg">
+		<span class="image-browser-caption">11. Smile Beauty</span>
+		<span class="image-browser-large-image-path">image1/11.jpg</span>
+	</div>
+	<div class="image-browser-image">
+		<img class="image-browser-thumb" src="image2/12.jpg">
+		<span class="image-browser-caption">12. Autumn Beauty</span>
+		<span class="image-browser-large-image-path">image1/12.jpg</span>
+	</div>
+	<div class="image-browser-Manual">
+		<img src='images/5.png' onclick='src="images/6.gif"' onmouseout='src="images/5.png"'>
+		
+	</div>
+	
+	<div class="image-browser-canvas"><!-- Gesture image and canvas -->
+	<canvas id="myCanvas" width="680" height="405" style="background-color:#transparent"
+			onmousedown="mouseDownEvent(event.clientX, event.clientY)"
+			onmousemove="mouseMoveEvent(event.clientX, event.clientY)"
+			onmouseup="mouseUpEvent(event.clientX, event.clientY)"
+		    oncontextmenu="return false;">
+		<span style="background-color:#ffff88;">The "canvas" element is not supported by this browser.</span>
+
+	</canvas>
+    </div>		
+</div>
+	
+<script type="text/javascript">
+var gallery = new JS.ImageBrowser({
+	el : 'image-browser',
+	autoplay : {
+		pause : 2
+	}});
+
+</script>
+
+	<p>
+	<form style="font-size:10pt">
+	<input type="radio" name="search" id="useGSS" checked style="display:none;">
+			<span style="font-weight:bold">Use Golden Section Search <i>(original)</i></span>
+		</input><br />
+	<input type="radio" name="search" id="useProtractor" style="display:none;">
+		<span style="font-weight:bold">Use Protractor <i>(faster)</i></span>
+			</input>
+			</form>
+</p>	
+<p>
+		<embed src="music/1.mp3" autostart="start" loop="true">
+			
+</p>
+	</body>
+</html>
