@@ -1,5 +1,11 @@
 Image-Browser-with-Gesture-Recognizer
 =====================================
+<br>
+<img src="https://s3.amazonaws.com/js4153/16.png">
+<img src="https://s3.amazonaws.com/js4153/17.png">
+<br>
+
+
 
 This is an image browser which can not only displayimages, but also allow users to interact with it by gestures.
 
@@ -49,9 +55,6 @@ The code shows that this algorithm works in 4 steps:
 
 3.Build
 
-<img src="https://s3.amazonaws.com/js4153/16.png">
-<img src="https://s3.amazonaws.com/js4153/17.png">
-<br>
 
 
 4.Release
