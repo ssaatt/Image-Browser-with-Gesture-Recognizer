@@ -65,3 +65,4 @@ The code shows that this algorithm works in 4 steps:
 1) http://www.juicebox.net/demos/  http://wowslider.com/demo.html
 
 2) http://www.dhtmlgoodies.com/index.html?whichScript=image-gallery-2011
+
